@@ -14,12 +14,12 @@ The system is designed to store feature embeddings and perform similarity search
 - Implement CRUD operations for database management  
 --------------------------------------------------------------------
 🛠️ Technologies Used
-Python 3.10+
-PostgreSQL
-pgvector extension
-SQLAlchemy ORM
-psycopg2
-pip (package manager)
+-Python 3.10+
+-PostgreSQL
+-pgvector extension
+-SQLAlchemy ORM
+-psycopg2
+-pip (package manager)
 --------------------------------------------------------------------
 📂 Project Structure
 postgres_vector_project/
@@ -32,28 +32,33 @@ postgres_vector_project/
 └── main.py          # Testing & execution script
 --------------------------------------------------------------------
 Key Features
-PostgreSQL database integration using Python
-Vector storage using pgvector
-Efficient similarity search using L2 distance
-SQLAlchemy ORM-based architecture
-Modular and scalable backend design
-Insert and retrieve vector embeddings
-Clean separation of database layers
+-PostgreSQL database integration using Python
+-Vector storage using pgvector
+-Efficient similarity search using L2 distance
+-SQLAlchemy ORM-based architecture
+-Modular and scalable backend design
+-Insert and retrieve vector embeddings
+-Clean separation of database layers
 --------------------------------------------------------------------
 ⚙️ Setup Instructions
 1️⃣ Install dependencies
+
 pip install sqlalchemy psycopg2-binary pgvector
 
 2️⃣ Create PostgreSQL database
+
 CREATE DATABASE face_vector_db;
 
 3️⃣ Enable vector extension
+
 CREATE EXTENSION IF NOT EXISTS vector;
 
 4️⃣ Run table creation script
+
 python schema.py
 
 5️⃣ Run the system
+
 python main.py
 --------------------------------------------------------------------
 📊 Functionality
