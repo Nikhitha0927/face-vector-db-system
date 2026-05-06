@@ -4,13 +4,14 @@
 This project demonstrates a PostgreSQL-based vector database system built using Python. It replaces traditional Excel-based storage with a scalable database solution capable of storing and querying vector embeddings using the pgvector extension.
 
 The system is designed to store feature embeddings and perform similarity search using vector distance, making it suitable for AI/ML-based applications.
-------
-🎯 Objective
-Establish and interact with a PostgreSQL database using Python
-Implement vector storage using pgvector
-Perform efficient similarity search using vector distance
-Build a modular backend using SQLAlchemy ORM
-Implement CRUD operations for database management
+--------------------------------------------------------------------
+## 🎯 Objective
+
+- Establish and interact with a PostgreSQL database using Python  
+- Implement vector storage using pgvector  
+- Perform efficient similarity search using vector distance  
+- Build a modular backend using SQLAlchemy ORM  
+- Implement CRUD operations for database management  
 --------------------------------------------------------------------
 🛠️ Technologies Used
 Python 3.10+
