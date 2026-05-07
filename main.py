@@ -1,14 +1,38 @@
-from crud import insert_face, find_closest_face
+from db import SessionLocal, create_tables
+from sqlalchemy import text
+import uuid
 
-sample_vector = [0.1] * 128
+# Step 1: Create table
+create_tables()
+
+session = SessionLocal()
 
 print("Inserting data...")
-insert_face("Nikhitha", sample_vector)
 
-print("Searching match...")
-result = find_closest_face(sample_vector)
+# Example vector (dummy 128-d vector)
+sample_vector = "[" + ",".join(["0.1"] * 128) + "]"
 
-if result:
-    print("Matched person:", result.name)
-else:
-    print("No match found")
+session.execute(text("""
+INSERT INTO faces (person_id, name, encoding, image_path, confidence)
+VALUES (:pid, :name, :enc, :img, :conf)
+"""), {
+    "pid": str(uuid.uuid4()),
+    "name": "Nikhitha",
+    "enc": sample_vector,
+    "img": "dataset/nikhitha.jpg",
+    "conf": 0.95
+})
+
+session.commit()
+
+print("Data inserted successfully")
+
+# Fetch data
+print("Fetching data...")
+
+result = session.execute(text("SELECT id, name, confidence FROM faces"))
+
+for row in result:
+    print(row)
+
+session.close()
