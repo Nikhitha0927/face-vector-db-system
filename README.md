@@ -103,14 +103,36 @@ Finds closest matching vector using L2 distance (Euclidean similarity).
 
 ## 🧪 Example Output
 
-db.py loaded successfully  
-schema.py STARTED  
-Creating tables...  
-Tables created successfully  
+## Expected Output
 
-Inserting data...  
-Searching match...  
-Matched person: Nikhitha  
+### Running db.py
+
+```bash
+python db.py
+Output:
+db.py loaded successfully
+
+#Running main.py
+python main.py
+Output:
+db.py loaded successfully
+Inserting data...
+Data inserted successfully
+(UUID('8549b44d-a4cf-4d96-9b73-2ed26ef3dc44'), 'Nikhitha', 0.95)1
+
+#PostgreSQL Table Structure
+\d faces
+Output:
+id
+person_id
+name
+encoding
+image_path
+confidence
+created_at
+updated_at
+
+
 
 ---
 
@@ -144,3 +166,5 @@ GitHub: https://github.com/Nikhitha0927
 ## 📌 Note
 
 This project focuses only on database + vector backend setup. Face recognition integration is excluded as per assignment requirements.
+
+
