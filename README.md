@@ -1,125 +1,117 @@
-#PostgreSQL Vector Database Project
-A PostgreSQL-based vector database system built using Python and the pgvector extension.
-This project demonstrates how vector embeddings can be stored and managed efficiently using PostgreSQL for AI/ML-based applications such as face recognition and attendance systems
-----
-#Features
--PostgreSQL database integration using SQLAlchemy
--pgvector extension support
--Vector embedding storage
--Multiple relational tables for scalable system design
--Attendance and geofence-ready schema
--Simple and clean Python implementation
+📌 Face Vector DB System (PostgreSQL + pgvector)
+�� Project Overview
+
+This project is a PostgreSQL-based Face Recognition Database System using pgvector extension to store and manage facial embeddings along with attendance, geofence, logs, and user management modules.
+
+It replaces traditional storage systems with a scalable AI-ready vector database architecture.
 ---
-#Technologies Used
--Python 3
--PostgreSQL
--SQLAlchemy
--psycopg2
--pgvector
+🧠 Key Features
+Face embedding storage using pgvector
+Multi-table relational database design
+Attendance tracking system with geolocation
+Geofence-based validation
+Audit logging system
+Face sample management for training/validation
+Admin authentication structure
+Registration workflow support
 ---
-#Project Structure
-postgres_vector_project/│
-├── db.py
-├── main.py
-└── README.md
+🗄️ Database Schema
+1. Persons
+Stores user/employee information.
+-employee_code
+-full_name
+-email
+-department
+-role
+-authentication fields
+-geofence mapping
+2. Faces
+Stores face embeddings and AI metadata.
+-encoding (VECTOR 128)
+-confidence score
+-blur_score
+-quality_score
+-liveness_passed
+-face dimensions
+-capture metadata
+3. Face Samples
+Stores multiple training images per user.
+-sample_vector (VECTOR 128)
+-angle type
+-quality & blur scoring
+-approval status
+4. Attendance
+Tracks check-in / check-out events.
+-GPS latitude & longitude
+-geofence validation
+-confidence score
+-sync status (offline support)
+-attendance type
+5. Geofence
+Defines location boundaries.
+-latitude / longitude
+-radius
+-zone type
+-allowed time windows
+-activation status
+6. Logs
+Audit logging system.
+-action tracking
+-old vs new data (JSONB)
+-severity levels
+-module tracking
+7. Admin Users
+Handles admin authentication.
+-username
+-password_hash
+-role-based access
+-status control
+8. Registration Sessions
+Manages multi-step onboarding workflow.
+-current step tracking
+-session expiry
+-completed face angles
 ---
-#Database Tables
-The project contains the following 6 tables:
-1. persons
-Stores user/person details.
-Column          Type
-person_id       UUID
-full_name       TEXT
-email           TEXT
-phone           TEXT
-created_at     TIMESTAMP
-
-2. faces
-Stores face embeddings and image information.
-Column         Type
-face_id        UUID
-person_id      UUI
-Dencoding    VECTOR(128)
-image_path     TEXT
-confidence   DOUBLE PRECISION
-created_at    TIMESTAMP
-
-3. face_samples
-Stores additional sample vectors.
-Column         Type
-sample_id      UUID
-person_id      UUID
-sample_path    TEXT
-sample_vector VECTOR(128)
-created_at    TIMESTAMP
-
-4. attendance
-Stores attendance records.
-Column          Type
-attendance_id   UUID
-person_id       UUID
-check_in       TIMESTAMP
-check_out      TIMESTAMP
-status          TEXT
-
-5. geofence
-Stores geofence location details.
-Column          Type
-geofence_id      UUID
-location_name    TEXT
-latitude        DOUBLE PRECISION
-longitude       DOUBLE PRECISION
-radius          DOUBLE PRECISION
-
-6. logs
-Stores activity logs.
-Column       Type
-log_id       UUID
-person_id    UUID
-action       TEXT
-log_time    TIMESTAMP
+⚙️ Tech Stack
+Python
+PostgreSQL
+pgvector extension
+SQLAlchemy
+psycopg2
 ---
-#Installation
-1. Clone Repository
-git clone <your-repository-url>cd postgres_vector_project
-
-2. Install Dependencies
+📦 Setup Instructions
+1. Install dependencies
 pip install sqlalchemy psycopg2 pgvector
-
-3. Start PostgreSQL
-Ensure PostgreSQL is running on:
-localhost:5433
-
-4. Run the Project
-python main.py
-----
-Expected Output
-db.py loaded successfullyCreating all tables...All tables created successfullyDatabase setup completed successfully
----
-#Verify Tables in PostgreSQL
-
-Open PostgreSQL terminal:
+2. Start PostgreSQL and create DB
 psql -U postgres -h localhost -p 5433 -d postgres
-
-Run:
-\dt
-
-#Expected tables:
-attendance
-face_samples
+3. Run project
+python main.py
+---
+📊 Tables Created
+persons
 faces
+face_samples
+attendance
 geofence
 logs
-persons
+admin_users
+registration_sessions
 ---
-#Future Improvements
--Face recognition integration
--Vector similarity search
--Attendance tracking automation
--REST API integration
--Real-time geofence validation
--Dashboard and analytics
+✅ Status
+
+✔ Database schema completed
+✔ Vector support enabled
+✔ Multi-module architecture ready
+✔ GitHub updated
+---
+📌 Future Improvements
+REST API (FastAPI integration)
+Face recognition pipeline
+Real-time attendance system
+Frontend dashboard
+Docker deployment
 ---
 Author
 K. Nikhitha
 GitHub: https://github.com/Nikhitha0927
+
