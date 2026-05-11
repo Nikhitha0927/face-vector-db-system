@@ -11,7 +11,7 @@ SessionLocal = sessionmaker(bind=engine)
 def create_tables():
     with engine.begin() as conn:
 
-        # Enable extensions
+        # ENABLE EXTENSIONS
         conn.execute(text("""
         CREATE EXTENSION IF NOT EXISTS vector;
         """))
@@ -20,15 +20,32 @@ def create_tables():
         CREATE EXTENSION IF NOT EXISTS pgcrypto;
         """))
 
+        # UPDATED_AT TRIGGER FUNCTION
+        conn.execute(text("""
+        CREATE OR REPLACE FUNCTION update_updated_at_column()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            NEW.updated_at = CURRENT_TIMESTAMP;
+            RETURN NEW;
+        END;
+        $$ language 'plpgsql';
+        """))
+
         # 1. ADMIN USERS TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS admin_users (
             admin_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
             username TEXT UNIQUE NOT NULL,
+
             password_hash TEXT NOT NULL,
+
             role TEXT CHECK (role IN ('admin','super_admin')),
+
             email TEXT UNIQUE NOT NULL,
+
             is_active BOOLEAN DEFAULT TRUE,
+
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """))
@@ -37,19 +54,27 @@ def create_tables():
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS geofence (
             geofence_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
             location_name TEXT NOT NULL,
+
             latitude DOUBLE PRECISION,
+
             longitude DOUBLE PRECISION,
+
             radius DOUBLE PRECISION,
 
             created_by UUID REFERENCES admin_users(admin_id),
 
             is_active BOOLEAN DEFAULT TRUE,
+
             zone_type TEXT,
+
             allowed_start_time TIME,
+
             allowed_end_time TIME,
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """))
@@ -60,8 +85,11 @@ def create_tables():
             person_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
             employee_code TEXT UNIQUE NOT NULL,
+
             full_name TEXT NOT NULL,
+
             email TEXT UNIQUE NOT NULL,
+
             phone TEXT,
 
             department TEXT,
@@ -71,7 +99,9 @@ def create_tables():
             password_hash TEXT NOT NULL,
 
             is_active BOOLEAN DEFAULT TRUE,
+
             deleted BOOLEAN DEFAULT FALSE,
+
             deleted_at TIMESTAMP,
 
             profile_photo TEXT,
@@ -85,6 +115,7 @@ def create_tables():
             default_geofence_id UUID REFERENCES geofence(geofence_id),
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """))
@@ -252,7 +283,7 @@ def create_tables():
         );
         """))
 
-        # INDEXES
+        # FOREIGN KEY INDEXES
         conn.execute(text("""
         CREATE INDEX IF NOT EXISTS idx_faces_person_id
         ON faces(person_id);
@@ -283,6 +314,44 @@ def create_tables():
         CREATE UNIQUE INDEX IF NOT EXISTS one_primary_face_per_person
         ON faces(person_id)
         WHERE is_primary = TRUE;
+        """))
+
+        # UPDATED_AT TRIGGERS
+
+        conn.execute(text("""
+        DROP TRIGGER IF EXISTS trg_persons_updated_at ON persons;
+
+        CREATE TRIGGER trg_persons_updated_at
+        BEFORE UPDATE ON persons
+        FOR EACH ROW
+        EXECUTE FUNCTION update_updated_at_column();
+        """))
+
+        conn.execute(text("""
+        DROP TRIGGER IF EXISTS trg_faces_updated_at ON faces;
+
+        CREATE TRIGGER trg_faces_updated_at
+        BEFORE UPDATE ON faces
+        FOR EACH ROW
+        EXECUTE FUNCTION update_updated_at_column();
+        """))
+
+        conn.execute(text("""
+        DROP TRIGGER IF EXISTS trg_attendance_updated_at ON attendance;
+
+        CREATE TRIGGER trg_attendance_updated_at
+        BEFORE UPDATE ON attendance
+        FOR EACH ROW
+        EXECUTE FUNCTION update_updated_at_column();
+        """))
+
+        conn.execute(text("""
+        DROP TRIGGER IF EXISTS trg_geofence_updated_at ON geofence;
+
+        CREATE TRIGGER trg_geofence_updated_at
+        BEFORE UPDATE ON geofence
+        FOR EACH ROW
+        EXECUTE FUNCTION update_updated_at_column();
         """))
 
     print("All tables created successfully")
