@@ -16,7 +16,27 @@ def create_tables():
         CREATE EXTENSION IF NOT EXISTS vector;
         """))
 
-        # 1. PERSONS TABLE
+        # 1. GEOFENCE TABLE
+        conn.execute(text("""
+        CREATE TABLE IF NOT EXISTS geofence (
+            geofence_id UUID PRIMARY KEY,
+            location_name TEXT,
+            latitude DOUBLE PRECISION,
+            longitude DOUBLE PRECISION,
+            radius DOUBLE PRECISION,
+
+            created_by UUID,
+            is_active BOOLEAN DEFAULT TRUE,
+            zone_type TEXT,
+            allowed_start_time TIME,
+            allowed_end_time TIME,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP
+        );
+        """))
+
+        # 2. PERSONS TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS persons (
             person_id UUID PRIMARY KEY,
@@ -34,17 +54,21 @@ def create_tables():
             registered_by UUID,
             last_login TIMESTAMP,
             timezone TEXT,
-            default_geofence_id UUID,
+
+            default_geofence_id UUID REFERENCES geofence(geofence_id),
+
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP
         );
         """))
 
-        # 2. FACES TABLE
+        # 3. FACES TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS faces (
             face_id UUID PRIMARY KEY,
-            person_id UUID,
+
+            person_id UUID REFERENCES persons(person_id) ON DELETE CASCADE,
+
             encoding VECTOR(128),
             image_path TEXT,
             confidence DOUBLE PRECISION,
@@ -65,11 +89,13 @@ def create_tables():
         );
         """))
 
-        # 3. FACE SAMPLES TABLE
+        # 4. FACE SAMPLES TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS face_samples (
             sample_id UUID PRIMARY KEY,
-            person_id UUID,
+
+            person_id UUID REFERENCES persons(person_id) ON DELETE CASCADE,
+
             sample_path TEXT,
             sample_vector VECTOR(128),
 
@@ -87,11 +113,12 @@ def create_tables():
         );
         """))
 
-        # 4. ATTENDANCE TABLE
+        # 5. ATTENDANCE TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS attendance (
             attendance_id UUID PRIMARY KEY,
-            person_id UUID,
+
+            person_id UUID REFERENCES persons(person_id) ON DELETE CASCADE,
 
             check_in TIMESTAMP,
             check_out TIMESTAMP,
@@ -99,7 +126,9 @@ def create_tables():
 
             latitude DOUBLE PRECISION,
             longitude DOUBLE PRECISION,
-            geofence_id UUID,
+
+            geofence_id UUID REFERENCES geofence(geofence_id),
+
             inside_geofence BOOLEAN,
             suspicious_flag BOOLEAN,
             confidence_score DOUBLE PRECISION,
@@ -114,31 +143,13 @@ def create_tables():
         );
         """))
 
-        # 5. GEOFENCE TABLE
-        conn.execute(text("""
-        CREATE TABLE IF NOT EXISTS geofence (
-            geofence_id UUID PRIMARY KEY,
-            location_name TEXT,
-            latitude DOUBLE PRECISION,
-            longitude DOUBLE PRECISION,
-            radius DOUBLE PRECISION,
-
-            created_by UUID,
-            is_active BOOLEAN DEFAULT TRUE,
-            zone_type TEXT,
-            allowed_start_time TIME,
-            allowed_end_time TIME,
-
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP
-        );
-        """))
-
         # 6. LOGS TABLE
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS logs (
             log_id UUID PRIMARY KEY,
-            person_id UUID,
+
+            person_id UUID REFERENCES persons(person_id) ON DELETE CASCADE,
+
             action TEXT,
             log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -150,6 +161,7 @@ def create_tables():
             ip_address TEXT,
             severity TEXT,
             module_name TEXT,
+
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """))
@@ -158,11 +170,14 @@ def create_tables():
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS admin_users (
             admin_id UUID PRIMARY KEY,
+
             username TEXT,
             password_hash TEXT,
             role TEXT,
             email TEXT,
+
             is_active BOOLEAN DEFAULT TRUE,
+
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """))
@@ -171,7 +186,9 @@ def create_tables():
         conn.execute(text("""
         CREATE TABLE IF NOT EXISTS registration_sessions (
             session_id UUID PRIMARY KEY,
-            person_id UUID,
+
+            person_id UUID REFERENCES persons(person_id) ON DELETE CASCADE,
+
             current_step INT,
             completed_angles TEXT,
             status TEXT,
