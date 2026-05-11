@@ -1,90 +1,157 @@
-📌 Face Vector DB System (PostgreSQL + pgvector)
-�� Project Overview
+# 📌 Face Vector DB System (PostgreSQL + pgvector)
 
-This project is a PostgreSQL-based Face Recognition Database System using pgvector extension to store and manage facial embeddings along with attendance, geofence, logs, and user management modules.
+## 🚀 Project Overview
 
-It replaces traditional storage systems with a scalable AI-ready vector database architecture.
+This project is a PostgreSQL-based Face Recognition Database System using the pgvector extension to store and manage facial embeddings along with attendance, geofence, logging, and user management modules.
+
+It is designed as a scalable AI-ready vector database architecture for real-time face recognition systems.
+
 ---
-🧠 Key Features
-Face embedding storage using pgvector
-Multi-table relational database design
-Attendance tracking system with geolocation
-Geofence-based validation
-Audit logging system
-Face sample management for training/validation
-Admin authentication structure
-Registration workflow support
+
+# 🧠 Key Features
+
+- Face embedding storage using pgvector
+- Multi-table relational database design
+- Attendance tracking system with geolocation
+- Geofence-based validation
+- Audit logging system
+- Face sample management for AI training/validation
+- Admin authentication structure
+- Registration workflow support
+- Foreign key relationships for CRUD-ready integration
+
 ---
-🗄️ Database Schema
-1. Persons
-Stores user/employee information.
--employee_code
--full_name
--email
--department
--role
--authentication fields
--geofence mapping
-2. Faces
+
+# 🗄️ Database Schema
+
+## 1. Persons
+Stores employee/user information.
+
+### Columns
+- employee_code
+- full_name
+- email
+- phone
+- department
+- role
+- password_hash
+- timezone
+- profile_photo
+- default_geofence_id
+
+---
+
+## 2. Faces
 Stores face embeddings and AI metadata.
--encoding (VECTOR 128)
--confidence score
--blur_score
--quality_score
--liveness_passed
--face dimensions
--capture metadata
-3. Face Samples
+
+### Columns
+- encoding (VECTOR(128))
+- confidence
+- angle
+- blur_score
+- quality_score
+- liveness_passed
+- face_width
+- face_height
+- eye_ratio
+- match_threshold
+- capture_device
+
+---
+
+## 3. Face Samples
 Stores multiple training images per user.
--sample_vector (VECTOR 128)
--angle type
--quality & blur scoring
--approval status
-4. Attendance
-Tracks check-in / check-out events.
--GPS latitude & longitude
--geofence validation
--confidence score
--sync status (offline support)
--attendance type
-5. Geofence
-Defines location boundaries.
--latitude / longitude
--radius
--zone type
--allowed time windows
--activation status
-6. Logs
+
+### Columns
+- sample_vector (VECTOR(128))
+- angle_type
+- quality_score
+- blur_score
+- liveness_passed
+- capture_order
+- approval status
+- uploaded_at
+
+---
+
+## 4. Attendance
+Tracks employee attendance activity.
+
+### Features
+- GPS latitude & longitude
+- Geofence validation
+- Confidence score
+- Suspicious activity detection
+- Offline sync support
+- Attendance type tracking
+
+---
+
+## 5. Geofence
+Defines office/location boundaries.
+
+### Features
+- Latitude / Longitude
+- Radius
+- Zone type
+- Allowed timing windows
+- Active/inactive zones
+
+---
+
+## 6. Logs
 Audit logging system.
--action tracking
--old vs new data (JSONB)
--severity levels
--module tracking
-7. Admin Users
+
+### Features
+- Action tracking
+- Old vs new data (JSONB)
+- Severity levels
+- Module tracking
+- IP address logging
+
+---
+
+## 7. Admin Users
 Handles admin authentication.
--username
--password_hash
--role-based access
--status control
-8. Registration Sessions
+
+### Features
+- Username/password authentication
+- Role-based access
+- Active status management
+
+---
+
+## 8. Registration Sessions
 Manages multi-step onboarding workflow.
--current step tracking
--session expiry
--completed face angles
+
+### Features
+- Current step tracking
+- Session expiry handling
+- Completed face angles
+
 ---
-⚙️ Tech Stack
-Python
-PostgreSQL
-pgvector extension
-SQLAlchemy
-psycopg2
+
+# ⚙️ Tech Stack
+
+- Python
+- PostgreSQL
+- pgvector
+- SQLAlchemy
+- psycopg2
+
 ---
-📦 Setup Instructions
-1. Install dependencies
+
+# 📦 Setup Instructions
+
+## 1. Install Dependencies
+
+```bash
 pip install sqlalchemy psycopg2 pgvector
-2. Start PostgreSQL and create DB
+---
+Start PostgreSQL
 psql -U postgres -h localhost -p 5433 -d postgres
-3. Run project
+---
+Run project
 python main.py
 ---
 📊 Tables Created
@@ -98,16 +165,16 @@ admin_users
 registration_sessions
 ---
 ✅ Status
-
 ✔ Database schema completed
-✔ Vector support enabled
-✔ Multi-module architecture ready
-✔ GitHub updated
+✔ pgvector support enabled
+✔ Foreign key integration completed
+✔ CRUD-ready relational architecture
+✔ GitHub repository updated
 ---
 📌 Future Improvements
-REST API (FastAPI integration)
+FastAPI integration
 Face recognition pipeline
-Real-time attendance system
+Real-time attendance monitoring
 Frontend dashboard
 Docker deployment
 ---
