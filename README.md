@@ -146,39 +146,69 @@ Manages multi-step onboarding workflow.
 ## 1. Install Dependencies
 
 ```bash
-pip install sqlalchemy psycopg2 pgvector
----
-Start PostgreSQL
-psql -U postgres -h localhost -p 5433 -d postgres
----
-Run project
-python main.py
----
-📊 Tables Created
-persons
-faces
-face_samples
-attendance
-geofence
-logs
-admin_users
-registration_sessions
----
-✅ Status
-✔ Database schema completed
-✔ pgvector support enabled
-✔ Foreign key integration completed
-✔ CRUD-ready relational architecture
-✔ GitHub repository updated
----
-📌 Future Improvements
-FastAPI integration
-Face recognition pipeline
-Real-time attendance monitoring
-Frontend dashboard
-Docker deployment
----
-Author
-K. Nikhitha
-GitHub: https://github.com/Nikhitha0927
+pip install sqlalchemy psycopg2 pgvector alembic
+```
 
+## 2. Start PostgreSQL
+
+```bash
+psql -U postgres -h localhost -p 5433 -d postgres
+```
+
+## 3. Run Project
+
+```bash
+python main.py
+```
+
+---
+
+# 📊 Tables Created
+
+- persons
+- faces
+- face_samples
+- attendance
+- geofence
+- logs
+- admin_users
+- registration_sessions
+
+---
+
+# ✅ Status
+
+✔ Database schema completed  
+✔ pgvector support enabled  
+✔ Foreign key integration completed  
+✔ CRUD-ready relational architecture  
+✔ GitHub repository updated  
+
+---
+
+# 📌 Future Improvements
+
+- FastAPI integration
+- Face recognition pipeline
+- Real-time attendance monitoring
+- Frontend dashboard
+- Docker deployment
+
+---
+
+# ⚡ Additional Features
+
+- Alembic migration/version control integrated
+- pgvector ivfflat indexes for optimized similarity search
+- Automatic updated_at triggers
+- Partial unique index for one primary face per person
+- Foreign key constraints with relational integrity
+- UUID-based primary keys using pgcrypto
+
+---
+
+# 👩‍💻 Author
+
+K. Nikhitha
+
+GitHub: https://github.com/Nikhitha0927

@@ -32,9 +32,7 @@ config.set_main_option(
 # -----------------------------
 # No ORM used (raw SQL project)
 # -----------------------------
-from models import Base
-
-target_metadata = Base.metadata
+ttarget_metadata = None
 
 
 # -----------------------------
