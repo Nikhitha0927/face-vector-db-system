@@ -1,11 +1,22 @@
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "postgresql+psycopg2://postgres:postgres@localhost:5433/postgres"
+load_dotenv()  # MUST BE FIRST
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL not found in .env file")
 
 engine = create_engine(DATABASE_URL)
 
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+Base = declarative_base()
+
+print("db.py loaded successfully")
 
 
 def create_tables():

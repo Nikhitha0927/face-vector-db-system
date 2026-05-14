@@ -11,18 +11,25 @@ from alembic import context
 config = context.config
 
 # -----------------------------
+# Add project root FIRST (IMPORTANT FIX)
+# -----------------------------
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+# -----------------------------
+# NOW import Base safely
+# -----------------------------
+from db import Base
+
+target_metadata = Base.metadata
+
+# -----------------------------
 # Logging setup
 # -----------------------------
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # -----------------------------
-# Add project root path
-# -----------------------------
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
-# -----------------------------
-# Database URL (IMPORTANT FIX)
+# Database URL
 # -----------------------------
 config.set_main_option(
     "sqlalchemy.url",
@@ -30,13 +37,7 @@ config.set_main_option(
 )
 
 # -----------------------------
-# No ORM used (raw SQL project)
-# -----------------------------
-ttarget_metadata = None
-
-
-# -----------------------------
-# Offline migration mode
+# OFFLINE MODE
 # -----------------------------
 def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
@@ -51,9 +52,8 @@ def run_migrations_offline() -> None:
     with context.begin_transaction():
         context.run_migrations()
 
-
 # -----------------------------
-# Online migration mode
+# ONLINE MODE
 # -----------------------------
 def run_migrations_online() -> None:
 
@@ -73,9 +73,8 @@ def run_migrations_online() -> None:
         with context.begin_transaction():
             context.run_migrations()
 
-
 # -----------------------------
-# Run mode
+# RUN
 # -----------------------------
 if context.is_offline_mode():
     run_migrations_offline()
