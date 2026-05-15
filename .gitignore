@@ -1,5 +1,7 @@
 .env
 __pycache__/
 *.pyc
+alembic/__pycache__/
+alembic/versions/__pycache__/
 
 
