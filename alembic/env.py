@@ -18,9 +18,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 # -----------------------------
 # NOW import Base safely
 # -----------------------------
-from db import Base
-
-target_metadata = Base.metadata
+target_metadata = None
 
 # -----------------------------
 # Logging setup
