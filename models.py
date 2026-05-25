@@ -17,10 +17,8 @@ class AdminUser(Base):
     __tablename__ = "admin_users"
 
     admin_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
-
     password_hash = Column(String, nullable=False)
 
     role = Column(String, CheckConstraint("role IN ('admin','super_admin')"))
@@ -36,7 +34,6 @@ class Person(Base):
     __tablename__ = "persons"
 
     person_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     employee_code = Column(String, unique=True, nullable=False)
     full_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
@@ -45,7 +42,6 @@ class Person(Base):
     department = Column(String)
 
     role = Column(String, CheckConstraint("role IN ('employee','manager','admin')"))
-
     password_hash = Column(String, nullable=False)
 
     is_active = Column(Boolean, default=True)
@@ -55,7 +51,6 @@ class Person(Base):
     profile_photo = Column(Text)
 
     registered_by = Column(UUID(as_uuid=True), ForeignKey("admin_users.admin_id"))
-
     last_login = Column(DateTime)
     timezone = Column(String)
 
@@ -72,7 +67,6 @@ class Geofence(Base):
     __tablename__ = "geofence"
 
     geofence_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     location_name = Column(String, nullable=False)
 
     latitude = Column(Float)
@@ -80,11 +74,9 @@ class Geofence(Base):
     radius = Column(Float)
 
     created_by = Column(UUID(as_uuid=True), ForeignKey("admin_users.admin_id"))
-
     is_active = Column(Boolean, default=True)
 
     zone_type = Column(String)
-
     allowed_start_time = Column(String)
     allowed_end_time = Column(String)
 
@@ -99,19 +91,16 @@ class Face(Base):
     __tablename__ = "faces"
 
     face_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     person_id = Column(UUID(as_uuid=True), ForeignKey("persons.person_id", ondelete="CASCADE"))
 
     encoding = Column(Vector(128))
 
     image_path = Column(Text)
-
     confidence = Column(Float)
     angle = Column(String)
 
     blur_score = Column(Float)
     quality_score = Column(Float)
-
     liveness_passed = Column(Boolean)
 
     face_width = Column(Integer)
@@ -121,7 +110,6 @@ class Face(Base):
     match_threshold = Column(Float)
 
     is_primary = Column(Boolean, default=False)
-
     capture_device = Column(String)
 
     created_at = Column(DateTime, server_default=func.now())
@@ -135,27 +123,22 @@ class FaceSample(Base):
     __tablename__ = "face_samples"
 
     sample_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     person_id = Column(UUID(as_uuid=True), ForeignKey("persons.person_id", ondelete="CASCADE"))
 
     sample_path = Column(Text)
-
     sample_vector = Column(Vector(128))
 
     angle_type = Column(String)
-
     quality_score = Column(Float)
     blur_score = Column(Float)
 
     liveness_passed = Column(Boolean)
-
     capture_order = Column(Integer)
 
     approved = Column(Boolean)
     rejected_reason = Column(Text)
 
     device_info = Column(Text)
-
     uploaded_at = Column(DateTime)
 
     created_at = Column(DateTime, server_default=func.now())
@@ -168,7 +151,6 @@ class Attendance(Base):
     __tablename__ = "attendance"
 
     attendance_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     person_id = Column(UUID(as_uuid=True), ForeignKey("persons.person_id", ondelete="CASCADE"))
 
     check_in = Column(DateTime)
@@ -205,11 +187,9 @@ class Log(Base):
     __tablename__ = "logs"
 
     log_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     person_id = Column(UUID(as_uuid=True), ForeignKey("persons.person_id", ondelete="CASCADE"))
 
     action = Column(String)
-
     log_time = Column(DateTime, server_default=func.now())
 
     table_name = Column(String)
@@ -221,7 +201,6 @@ class Log(Base):
     new_data = Column(Text)
 
     ip_address = Column(String)
-
     severity = Column(String)
     module_name = Column(String)
 
@@ -235,13 +214,10 @@ class RegistrationSession(Base):
     __tablename__ = "registration_sessions"
 
     session_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-
     person_id = Column(UUID(as_uuid=True), ForeignKey("persons.person_id", ondelete="CASCADE"))
 
     current_step = Column(Integer)
-
     completed_angles = Column(Text)
-
     status = Column(String)
 
     started_at = Column(DateTime)

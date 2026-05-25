@@ -1,16 +1,34 @@
+from db import engine
 from repositories.person_repository import PersonRepository
 
 
 class PersonService:
 
     def __init__(self):
-
         self.repo = PersonRepository()
 
-    def create(self, data):
+    def register_person(self, data):
 
-        self.repo.create_person(data)
+        with engine.begin() as conn:
 
-    def get_all(self):
+            person_id = self.repo.create_person(conn, data)
 
-        return self.repo.get_persons()
+            return person_id
+
+    def fetch_person(self, person_id):
+
+        with engine.begin() as conn:
+
+            return self.repo.get_person(conn, person_id)
+
+    def edit_person(self, person_id, data):
+
+        with engine.begin() as conn:
+
+            self.repo.update_person(conn, person_id, data)
+
+    def remove_person(self, person_id):
+
+        with engine.begin() as conn:
+
+            self.repo.soft_delete_person(conn, person_id)

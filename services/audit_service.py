@@ -1,3 +1,7 @@
+import json
+from sqlalchemy import text
+
+
 def log_action(
     conn,
     person_id,
@@ -31,6 +35,6 @@ def log_action(
         "action": action,
         "table_name": table_name,
         "record_id": record_id,
-        "old_data": old_data,
-        "new_data": new_data
+        "old_data": json.dumps(old_data) if old_data else None,
+        "new_data": json.dumps(new_data) if new_data else None
     })

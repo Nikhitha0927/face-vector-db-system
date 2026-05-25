@@ -1,240 +1,109 @@
 # Face Vector DB System
 
-PostgreSQL + pgvector based backend database system with CRUD operations, vector indexing, audit logging, repository/service architecture, and attendance management support.
+PostgreSQL backend system with pgvector support, relational schema, CRUD operations, audit logging, backup automation, and testing.
 
----
+## Features
 
-# Features
-
-* PostgreSQL database integration
-* pgvector extension support
-* UUID primary keys using `gen_random_uuid()`
-* Repository and service layer architecture
-* CRUD operations
+* PostgreSQL + pgvector integration
+* Relational database schema
+* UUID primary keys
 * Foreign key relationships
-* Audit logging support
-* Attendance and geofence management
-* Soft delete implementation
-* Vector similarity indexing using `ivfflat`
-* Automated backup support
-* Alembic migration support
-* Pytest testing support
+* CRUD operations
+* Repository and service layers
+* Audit logging
+* Soft delete support
+* Automated backup script
+* Attendance reporting view
+* pgvector similarity indexes
+* Pytest testing
+* Stress test setup
 
 ---
 
-# Technologies Used
+## Technologies
 
 * Python
 * PostgreSQL
 * SQLAlchemy
 * pgvector
 * Alembic
-* Pytest
+* pytest
 
 ---
 
-# Project Structure
+## Project Structure
 
-```bash
+```text
 postgres_vector_project/
 │
 ├── db.py
 ├── main.py
-├── requirements.txt
 ├── .env
-├── backup.sh
 │
 ├── repositories/
-│   ├── __init__.py
-│   ├── person_repository.py
-│   ├── face_repository.py
-│   └── attendance_repository.py
-│
 ├── services/
-│   ├── __init__.py
-│   ├── person_service.py
-│   └── face_service.py
-│
 ├── tests/
-│   ├── __init__.py
-│   ├── test_person.py
-│   └── test_face.py
-│
+├── sql/
 ├── utils/
-│   ├── __init__.py
-│   ├── audit_logger.py
-│   └── backup.py
-│
-└── backups/
+├── backups/
+└── alembic/
 ```
 
 ---
 
-# Database Tables
+## Setup
 
-## persons
-
-Stores employee and user information.
-
-## faces
-
-Stores face vector embeddings using pgvector.
-
-## face_samples
-
-Stores additional face sample vectors.
-
-## attendance
-
-Stores attendance logs with geofence support.
-
-## geofence
-
-Stores office/location geofence data.
-
-## logs
-
-Stores audit logs and activity tracking.
-
-## admin_users
-
-Stores admin authentication data.
-
-## registration_sessions
-
-Stores registration workflow session data.
-
----
-
-# PostgreSQL Extensions
-
-```sql
-CREATE EXTENSION IF NOT EXISTS vector;
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-```
-
----
-
-# Installation
-
-## Clone Repository
-
-```bash
-git clone https://github.com/Nikhitha0927/face-vector-db-system.git
-```
-
-## Navigate to Project
-
-```bash
-cd face-vector-db-system
-```
-
-## Install Dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-# Environment Variables
-
-Create a `.env` file:
+Create `.env` file:
 
 ```env
 DATABASE_URL=postgresql://postgres:password@localhost:5433/postgres
 ```
 
----
-
-# Run Project
+Run project:
 
 ```bash
 python main.py
 ```
 
----
-
-# Run Tests
+Run tests:
 
 ```bash
-python -m pytest
+export PYTHONPATH=.
+pytest tests/
 ```
 
 ---
 
-# Backup Database
+## Database Features
 
-Give permission:
-
-```bash
-chmod +x backup.sh
-```
-
-Run backup:
-
-```bash
-./backup.sh
-```
-
-Backups will be stored inside:
-
-```bash
-backups/
-```
-
----
-
-# Features Implemented
-
-* CRUD operations
-* Foreign keys
-* UUID generation
-* Soft delete support
+* pgvector vector search
+* ivfflat indexes
+* audit logs
 * UTC timestamps
-* Audit logging
-* Repository/service architecture
-* Vector similarity indexes
-* Partial unique indexes
-* Query optimization indexes
-* Attendance reporting support
-* pgvector integration
-* Alembic migration setup
-* Automated backup support
-* Stress/performance ready schema
+* automatic updated_at triggers
+* soft delete support
+* attendance reporting view
 
 ---
 
-# Indexes Added
+## Backup
 
-* Foreign key indexes
-* `ivfflat` vector indexes
-* Partial unique indexes
-* Attendance indexes
-* Log indexes
-
----
-
-# Constraints Added
-
-* NOT NULL constraints
-* UNIQUE constraints
-* CHECK constraints
-* Foreign key constraints
-
----
-
-# Testing
-
-Pytest is used for testing CRUD operations and database functionality.
+Run backup script:
 
 ```bash
-python -m pytest
+python utils/backup.py
 ```
 
 ---
 
-# GitHub Repository
+## GitHub
 
 https://github.com/Nikhitha0927/face-vector-db-system
+
 

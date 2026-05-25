@@ -1,12 +1,12 @@
 #!/bin/bash
 
-DATE=$(date +%Y-%m-%d_%H-%M-%S)
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
-BACKUP_DIR="./backups"
+pg_dump \
+-U postgres \
+-h localhost \
+-p 5433 \
+postgres \
+> backups/backup_$TIMESTAMP.sql
 
-mkdir -p $BACKUP_DIR
-
-pg_dump -U postgres -h localhost -p 5433 postgres > \
-$BACKUP_DIR/backup_$DATE.sql
-
-echo "Backup completed"
+echo "Backup Completed"
