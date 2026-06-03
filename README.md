@@ -1,109 +1,203 @@
-# Face Vector DB System
+# PostgreSQL Face Recognition Attendance System
 
-PostgreSQL backend system with pgvector support, relational schema, CRUD operations, audit logging, backup automation, and testing.
+## Overview
 
-## Features
+A PostgreSQL-based Face Recognition Attendance Management System developed using Python and PostgreSQL.
 
-* PostgreSQL + pgvector integration
-* Relational database schema
-* UUID primary keys
-* Foreign key relationships
-* CRUD operations
-* Repository and service layers
-* Audit logging
-* Soft delete support
-* Automated backup script
-* Attendance reporting view
-* pgvector similarity indexes
-* Pytest testing
-* Stress test setup
+The project demonstrates:
 
----
-
-## Technologies
-
-* Python
-* PostgreSQL
-* SQLAlchemy
-* pgvector
-* Alembic
-* pytest
+* CRUD Operations
+* Repository-Service Architecture
+* Audit Logging
+* Attendance Reporting View
+* Database Indexing
+* Backup Utility
+* Unit Testing
+* Stress Testing
 
 ---
 
 ## Project Structure
 
-```text
 postgres_vector_project/
-│
-├── db.py
-├── main.py
-├── .env
-│
+
+├── models/
+
 ├── repositories/
+
 ├── services/
-├── tests/
+
 ├── sql/
+
+│ ├── attendance_view.sql
+
+│ ├── audit_logging.sql
+
+│ └── indexes.sql
+
+├── tests/
+
+│ ├── test_face.py
+
+│ ├── test_person.py
+
+│ └── stress_test.py
+
 ├── utils/
-├── backups/
-└── alembic/
-```
+
+│ └── backup.py
+
+├── db.py
+
+├── main.py
+
+└── README.md
 
 ---
 
-## Setup
+## Features
+
+### Person Management
+
+* Create Person
+* Fetch Person
+* Update Person
+* Soft Delete Person
+
+### Audit Logging
+
+Tracks:
+
+* CREATE
+* UPDATE
+* DELETE
+
+Stored in logs table.
+
+### Attendance Reporting
+
+Attendance report view:
+
+attendance_report
+
+Displays:
+
+* Employee Name
+* Check In
+* Check Out
+* Status
+* Geofence Status
+
+### Backup Utility
+
+Create SQL backups:
+
+python utils/backup.py
+
+### Database Indexing
+
+Indexes created for performance optimization.
+
+### Stress Testing
+
+100 record insertion benchmark.
+
+### Unit Testing
+
+Pytest-based testing for:
+
+* Person Service
+* Face Service
+
+---
+
+## Installation
 
 Install dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+pip install sqlalchemy psycopg2-binary pytest
 
-Create `.env` file:
+---
 
-```env
-DATABASE_URL=postgresql://postgres:password@localhost:5433/postgres
-```
+## Database Setup
 
-Run project:
+Connect PostgreSQL:
 
-```bash
+psql -U postgres -h localhost -p 5433 -d postgres
+
+Create views:
+
+\i sql/attendance_view.sql
+
+Create indexes:
+
+\i sql/indexes.sql
+
+---
+
+## Run Project
+
 python main.py
-```
 
-Run tests:
+---
 
-```bash
+## Run Tests
+
 export PYTHONPATH=.
-pytest tests/
-```
+
+pytest tests/test_face.py tests/test_person.py
+
+Expected Output:
+
+2 passed
 
 ---
 
-## Database Features
+## Run Stress Test
 
-* pgvector vector search
-* ivfflat indexes
-* audit logs
-* UTC timestamps
-* automatic updated_at triggers
-* soft delete support
-* attendance reporting view
+export PYTHONPATH=.
 
----
+python tests/stress_test.py
 
-## Backup
+Expected Output:
 
-Run backup script:
-
-```bash
-python utils/backup.py
-```
+Inserted 100 records in X seconds
 
 ---
 
-## GitHub
+## Audit Log Verification
 
-https://github.com/Nikhitha0927/face-vector-db-system
+SELECT action, table_name, created_at
+FROM logs;
+
+---
+
+## Technologies Used
+
+* Python 3.13
+* PostgreSQL 16
+* SQLAlchemy
+* Psycopg2
+* Pytest
+
+---
+
+## Status
+
+Completed
+
+* CRUD Operations
+* Audit Logging
+* Attendance View
+* Backup Utility
+* Indexing
+* Unit Testing
+* Stress Testing
+
+
+
+
+
+
 
 
