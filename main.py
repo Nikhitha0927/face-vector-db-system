@@ -13,13 +13,13 @@ def main():
 
         # CREATE
         person_data = {
-            "employee_code": "EMP101",
-            "full_name": "Nikhitha",
-            "email": "nikhitha@gmail.com",
-            "department": "AI",
-            "role": "employee",
-            "password_hash": "hashed_password"
-        }
+    "employee_code": "EMP102",
+    "full_name": "Nikhitha",
+    "email": "nikhitha102@gmail.com",
+    "department": "AI",
+    "role": "employee",
+    "password_hash": "hashed_password"
+}
 
         person_id = service.register_person(person_data)
 
